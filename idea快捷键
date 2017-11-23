@@ -1,0 +1,38 @@
+
+command+1     		提示
+command+E    		最近打开的文件
+command+N           新建类
+command+r           类重命名
+command+D 			删除行
+command+G			查看类的使用在那些地方
+
+
+command+f    		当前文件查找
+command+h    		当前文件替换
+command+k 			文本内查找到文字的下个引用
+control+f    		全文查找
+control+H    		全文替换
+
+alt + r             复制类的引用路径
+
+command+i	        跳到类的实现
+
+shift+enter    		换到下一行
+
+
+command+/ 			注释一行或着多行 //
+ctrl+shift+/ 		注释/*...*/
+
+command+shirt+o 		快速导包
+
+
+command+alt+左右箭头 返回上次编辑的位置
+
+command+shirt+T 		查找类
+command+shirt+R 		查找文件
+command+shirt+F 		格式化
+command+option+上下箭头 		复制当前行代码到下一行
+
+command+shift+U 大小写转换
+
+command+shift+上下箭头 把代码上移或着下移

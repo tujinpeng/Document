@@ -1,0 +1,129 @@
+1.dubbo消费者服务代理增强InvokerInvocationHandler: 
+  invoker(MockClusterInvoker) :interface com.lvmama.tnt.prod.service.db.TntCouponDbService -> zookeeper://10.200.4.74:2181/com.alibaba.dubbo.registry.RegistryService?application=tnt_dist&default.check=false&default.lazy=true&dubbo=2.5.3&interface=com.lvmama.tnt.prod.service.db.TntCouponDbService&methods=update,getByCouponId,queryPage,count,selectList,insert&pid=30298&side=consumer&timestamp=1502434170678,directory: com.alibaba.dubbo.registry.integration.RegistryDirectory@2ed88d3d
+
+
+2. dubbo provider注册url
+
+dubbo://10.200.5.144:20889/com.lvmama.comm.pet.service.pub.ComFSService?anyhost=true&application=pet_public&default.delay=30000&default.retries=0&default.timeout=60000&delay=30000&dubbo=2.5.3&interface=com.lvmama.comm.pet.service.pub.ComFSService&methods=selectComFSFileById,selectComFSServiceConfigByServerType,insertComFSFile,selectFSCofigById&pid=22615&revision=1.1.0&serverApplicationName=pet_public&side=provider&timestamp=1502791743542
+
+com.alibaba.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker#invoke
+
+
+dubbo消费方refer引用调用过程:
+
+InvokerInvocationHandler->MockClusterInvoker.invoke
+
+
+点对点dubbo远程调用脚本：
+public void init(){
+		ApplicationConfig application =new ApplicationConfig();
+		application.setName("tnt_dist");
+		RegistryConfig registryconfig = new RegistryConfig();
+		registryconfig.setAddress("10.200.4.74:2181");
+		registryconfig.setProtocol("zookeeper");
+		ReferenceConfig<TntProductService> reference = new ReferenceConfig<TntProductService>();
+		reference.setApplication(application);
+		reference.setRegistry(registryconfig);
+		reference.setInterface(TntProductService.class);
+		reference.setUrl("dubbo://10.200.6.235:20971");
+		tntproductservice = reference.get();
+	}
+
+3.consumer filter调用顺序
+ConsumerContextFilter
+
+
+4.dubbo-monitor 调用监控
+MonitorFilter-DubboMonitor-SimpleMonitorService
+
+
+5. dubbo消费方调用远程服务超时机制
+(1)DubboInvoker:
+	发起远程调用，返回DefaultFuture,调用get()客户端进行超时等待
+(2)HeaderExchangeHandler
+	接收到服务器端响应，通知DefaultFuture,结束客户端等待
+(3)RemotingInvocationTimeoutScan
+	检查客户端future请求超时的守护线程
+	当客户端future的超时了，创建个超时response通知future返回，抛出异常
+(4)DefaultFuture
+	客户端发起一次远程请求的预期结果
+	存储每一次客户端发起的requestId和future映射
+
+
+6.dubbo消费方心跳机制
+(1)HeaderExchangeClient:
+	客户端建立连接时，开启心跳定时线程
+(2)HeartBeatTask  
+   心跳定时线程 
+   检查最后一次读写时间距现在超过心跳时间（60s）的，发送心跳请求；
+   最后一次读距现在超过心跳超时60*3秒 重新发起客户端远程连接。
+(3)HeartbeatHandler
+   每次发起远程调用时，记录最后一次的读写时间
+
+
+7.公司对dubbo的3个扩展
+(1)日志trackernum跟踪
+(2)dubbo cache LruCache
+(3)ark
+(4)dubbo monitor
+
+8.dubbo还要了解的模块
+注册中心
+监控中心
+
+
+9.dubbo扩展机制核心 动态代理对象
+class Protocol$Adpative implements Protocol{
+    public com.alibaba.dubbo.rpc.Exporter export(com.alibaba.dubbo.rpc.Invoker arg0) throws com.alibaba.dubbo.rpc.RpcException{
+        if (arg0 == null)  { 
+            throw new IllegalArgumentException("com.alibaba.dubbo.rpc.Invoker argument == null"); 
+        }
+        if (arg0.getUrl() == null) { 
+            throw new IllegalArgumentException("com.alibaba.dubbo.rpc.Invoker argument getUrl() == null"); 
+        }
+        com.alibaba.dubbo.common.URL url = arg0.getUrl();
+        String extName = ( url.getProtocol() == null ? "dubbo" : url.getProtocol() );
+        if(extName == null) {
+            throw new IllegalStateException("Fail to get extension(com.alibaba.dubbo.rpc.Protocol) name from url(" + url.toString() + ") use keys([protocol])"); 
+        }
+        com.alibaba.dubbo.rpc.Protocol extension = (com.alibaba.dubbo.rpc.Protocol)com.alibaba.dubbo.common.ExtensionLoader.getExtensionLoader(com.alibaba.dubbo.rpc.Protocol.class).getExtension(extName);
+        return extension.export(arg0);
+    }
+
+    public com.alibaba.dubbo.rpc.Invoker refer(java.lang.Class arg0,com.alibaba.dubbo.common.URL arg1) throws com.alibaba.dubbo.rpc.RpcException{
+        if (arg1 == null)  { 
+            throw new IllegalArgumentException("url == null"); 
+        }
+        com.alibaba.dubbo.common.URL url = arg1;
+        String extName = ( url.getProtocol() == null ? "dubbo" : url.getProtocol() );
+        if(extName == null) {
+            throw new IllegalStateException("Fail to get extension(com.alibaba.dubbo.rpc.Protocol) name from url(" + url.toString() + ") use keys([protocol])"); 
+        }
+        com.alibaba.dubbo.rpc.Protocol extension = (com.alibaba.dubbo.rpc.Protocol)com.alibaba.dubbo.common.ExtensionLoader.getExtensionLoader(com.alibaba.dubbo.rpc.Protocol.class).getExtension(extName);
+        return extension.refer(arg0, arg1);
+    }
+
+    public void destroy(){
+        throw new UnsupportedOperationException("method public abstract void com.alibaba.dubbo.rpc.Protocol.destroy() of interface com.alibaba.dubbo.rpc.Protocol is not adaptive method!");
+    }
+}
+
+10.dubbo注解解析流程？？？
+
+
+11.dubbo优化
+(1)调整dubbo线程池数
+(2)将dubbo线程池分发设置成message  只将请求响应消息派发到线程池，其他如连接断开，心跳，发送sent事件直接在io线程上操作？？？（为何这么设置）
+
+
+12.dubbo中远程通信事件
+连接和断开 请求和响应 心跳 异常事件 sent事件 
+
+
+
+
+
+
+
+
+ 

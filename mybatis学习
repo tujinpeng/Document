@@ -1,0 +1,17 @@
+1.SqlSessionFactoryBean-》SqlSessionFactory,configutation
+
+2.MapperScannerConfigurer 扫描创建mapper代理
+
+3.sqlNode解析sql语句？如何解析出可执行的sql语句
+
+4.ErrorContext.instance().activity???
+
+5.MetaObject解析paramObject的value？？？
+
+6.org.apache.ibatis.reflection.wrapper.BeanWrapper#getBeanProperty去解析参数对象中值时：
+	paramObject.page.pageSize如何获取的？？
+
+7.mapper mapper.xml名称要一致为啥？？？？
+
+
+8.SqlsessionTemple要和spring事务一起分析

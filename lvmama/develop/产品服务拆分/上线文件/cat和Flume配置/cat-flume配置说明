@@ -1,0 +1,17 @@
+1. 将"app.properties"
+	
+	文件放在tnt_product_service项目下的config目录下的 META-INF 中
+		
+2. 在tnt_product_service所在服务器根目录下创建 
+	1.  linux 系统则直接就在根目录下 -> /data 目录 并给予 /data目录有读写权限
+    2.  在data目录下分别创建  appdatas/cat， applogs/cat目录
+	3.  在appdatas/cat/下添加 client.xml 文件
+	
+(注意:)
+	仿真环境用 [仿真环境client.xml]
+	
+	线上环境用 [线上client.xml]
+
+---------------------------------------------------
+
+3. 启动线上 tnt_product_service 服务下的 Flume日志收集器

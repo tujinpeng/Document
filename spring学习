@@ -1,0 +1,27 @@
+1.比较重要的几个接口
+(1)BeanPostProcesser
+(2)BeanFactoryPostProcessor--扩展BeanDefinitionRegistryPostProcessor
+
+(3)ApplicationContextAware
+(4)BeanFactoryAware
+(5)BeanNameAware
+
+(6)InitializingBean
+(7)DisposableBean
+
+2.比较重要的bean初始化后置通知 beanPostProcesser
+
+(1)AutowiredAnnotationBeanPostProcessor 
+扫描到bean的属性有@Autowired注解的，通过反射自动注入属性
+
+？如何解析@Autowired注入属性bean的
+
+(2)AspectJAwareAdvisorAutoProxyCreator
+创建aop的代理
+
+3.ClassPathBeanDefinitionScanner
+bean定义的扫描器 
+扫描指定路径下带有@Componet注解的class文件，生成beanDefinitions注册到beanFactory。
+
+
+4.IOC和类加载器关系？？

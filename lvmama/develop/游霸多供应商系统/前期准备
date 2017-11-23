@@ -1,0 +1,37 @@
+1.城市目的地接口
+(1)城市目的地接口（目的地）：
+com.lvmama.vst.api.biz.service.VstDestService.findDestList
+目的地分页接口
+
+-提供给分销接口支持的分页查询条件：
+目的地id
+目的地名称
+目的地名称的拼音
+目的地类型：城市
+父级的目的地id
+
+-主站页面支持的分页查询条件
+目的地id
+目的地名称
+目的地类型：城市
+行政名称
+父级目的地名称
+
+
+(2)行政区(出发地)
+com.lvmama.vst.api.biz.service.impl.VstDistrictServiceImpl#findDistrictList() 行政区分页接口
+
+-目前接口只支持行政区类型来查找 不支持行政区名称,有效来查   [要主站改]
+
+2.搜索接入：
+-建索引：
+目前搜索组建立的产品信息 查的是PROD_PRODUCT  PROD_PRODUCT_PROD
+多供应商系统的产品信息在新表里 建立索引需要向搜索组提需求
+
+-关键字搜索
+ 向搜索组提需求
+
+
+3.图库
+
+4.

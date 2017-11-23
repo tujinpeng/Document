@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config mode="client" xmlns:xsi="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="config.xsd">
+    <servers>
+        <!-- Local mode for development -->
+        <server ip="10.201.1.139" port="2280" http-port="8080" />
+        <server ip="10.201.1.152" port="2280" http-port="8080" />
+        <server ip="10.201.1.165" port="2280" http-port="8080" />
+    </servers>
+
+    <!--开关-->
+    <domain id="tnt_product_service" enabled="true"/>
+
+</config>

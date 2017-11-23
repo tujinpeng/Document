@@ -1,0 +1,134 @@
+--------------------知识点整理：------------------
+数据结构
+算法
+
+集合
+并发
+nio
+
+设计模式（单例 模板 工厂 动态代理 装饰器 责任链 建造者）
+
+spring（ioc aop 事务）
+mybatis
+
+dubbo
+
+netty
+
+-----------------------------------------------
+#cas compareAndSet 如果两个线程是同一个对象 都能set成功么
+
+#LongAddr高效原子计数器
+
+#强引用 弱引用（ThreadLocal WeakHashMap） 软引用 虚引用
+
+#new出来的对象 只能被gc回收 设置成空只是把引用设置成null
+
+#对象是不能设置成空的，只能把所有对象引用设置成null，这样对象没有别人引用了，gc会回收对象。
+
+#建造者模式
+将对象的组装和表现分离开来
+
+
+#深入理解Java中为什么内部类可以访问外部类的成员？
+1 内部类对象的创建依赖于外部类对象；
+2 内部类对象持有指向外部类对象的引用。
+
+
+#集合
+(1)数组 
+ArrayList
+
+CopyOnWriteArrayList(读大于写-线程安全的数组)
+
+(2)链表（跳表）
+LinkedList(Queue Dequeue)
+
+
+跳跃表 有序的单链表 插入删除查找的时间复杂度为o(logn) 性能媲美红黑树
+--ConcurrentSkipListMap（线程安全的跳跃表）
+原理：volatile(保证可见性)+cas(保证原子性)方式 提供线程安全的并发工具
+操作：
+	add 插入
+	remove 删除
+
+
+(3)栈    
+stack
+
+(4)队列
+#单向队列Queue
+ArrayDeque(循环数组)
+LinkedList（双向链表）
+
+
+#双向队列Deque
+ArrayDeque
+LinkedList
+
+#优先级队列
+PriorityQueue
+
+#线程安全的单向队列BlockingQueue
+ArrayBlockingQueue
+LinkedBlockingQueue
+PriorityBlockingQueue
+DelayQueue
+SynchronousQueue
+LinkedTransferQueue
+
+ConcurrentLinkedQueue(cas)
+
+#线程安全的双向队列BlockingDeque
+LinkedBlockingDeque
+
+ConcurrentLinkedDeque(cas)
+
+
+(5)hash表 
+HashMap（jdk1.8 红黑树） 
+HashSet
+LinkedHashMap(双向循环链表+hash表)
+LinkedHashSet
+WeakHashMap(弱引用+hash表) 
+TreeHashMap（红黑树+hash表） 
+ConcurrentHashMap
+hashTable
+
+(6)二叉树 红黑树 插入删除遍历时间复杂度都是 O(logn)
+-TreeHashMap
+#树插入操作
+put
+
+#树遍历获取节点操作   
+get   
+
+#遍历
+entrySet 树节点对象entry集合
+keySet	 树节点对象key集合
+values   树节点对象value集合
+
+#Interator(集合遍历统一接口)
+next    输出当前要遍历元素，计算下一个元素  
+hasNext 判断是否有下一个元素要遍历
+remove	删除当前遍历的元素
+
+EntryIterator 树节点对象entry遍历
+KeyIterator	  树节点对象key遍历
+ValueIterator 树节点对象value遍历
+
+#删除
+remove
+
+#从fromKey开始返回map部分视图
+tailMap(K fromKey)
+
+#返回树中最小的元素
+firstKey
+
+
+(7)堆(优先级队列) 
+PriorityQueue
+
+
+

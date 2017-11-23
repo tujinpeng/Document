@@ -1,0 +1,219 @@
+1.mapper整理
+删除：
+DistGoodsBranchMapper 
+DistGoodsTimePriceMapper 
+DistMetaGoodsTimePriceRelMapper 
+FreeGroupHotelMapper 
+HotelDistTimePriceHistoryMapper
+HotelDistTimePriceMapper
+HotelMetaTimePriceMapper
+MetaGoodsTimePriceMapper
+RoutePackageHotelGoodsMapper
+RoutePackageHotelMapper
+TntBillDetailMapper
+TntCpsProductVoMapper
+TntCSTimePriceVoMapper
+TntLineSellPackageMapper
+TntRecommendMapper
+TntRouteProductLineDateMapper
+tntSellProductMapper
+tntGoodsNotimePriceMapper
+TntHotelProductBranchMapper
+
+不动：
+TntAdPromMapper
+TntApierrorLogMapper
+
+要迁移的：
+TntCompshipProductMapper
+TntCruiseCompRelationMapper
+TntCruisePackageMapper
+TntCruisePackageProductRelMapper
+TntCruiseProductMapper
+TntHotelProductVoMapper
+TntCpsProdCommissionMapper
+
+TntCouponMapper
+TntCouponRuleMapper
+TntCouponUserRelMapper
+TntMarkupRuleMapper
+TntInsuranceProductVoMapper
+TntProdPolicyMapper
+TntProductMapper
+TntProductVoMapper
+TntProductUserMapper
+
+
+TntRouteProductImprVoMapper
+TntSellBranchMapper
+TntSellBranchRelationMapper
+TntSellPackageMapper
+TntSellPackageRelationMapper
+
+TntTicketProductMapper
+ProductMonitorJobMapper
+
+
+
+
+
+
+
+
+包装的service：
+TntCompshipProductMapper
+TntCruiseCompRelationMapper
+TntCruisePackageMapper
+TntInsuranceProductVoMapper
+TntProdPolicyMapper
+TntProductUserMapper
+TntProductVoMapper
+TntRouteProductImprVoMapper
+TntSellBranchMapper
+TntSellPackageMapper
+TntSellPackageRelationMapper
+
+直接迁移的service：
+TntApiErrorServiceImpl
+TntCruisePackageProductRelService（有事务）
+TntCruiseProductService（事务）
+TntHotelProductServiceImpl
+TntProductExtServiceImpl
+TntSellBranchRelationServiceImpl
+TntTicketProductServiceImpl
+
+
+
+2.计划
+
+
+3。测试功能点
+涉及迁移服务：
+TntCouponMapper
+TntCouponRuleMapper
+TntCouponUserRelMapper
+TntMarkupRuleMapper
+TntProdPolicyMapper
+TntProductMapper
+TntProductVoMapper
+TntProductUserMapper
+
+###################一、门票：######################
+1.后台
+(1) 门票产品商品vst同步（测下能同步过来就好 不用测各种消息变更）
+(2) 门票产品管理查询
+(3) 分不分销
+(4) 期票返现 门票时间价格策略修改
+(5) 下单
+
+
+2.b2b
+(1) b2b前台搜索页展示 门票品类详情页展示 
+(2) 下单列表页 下单页 下单
+
+3.api (流程走一遍就好)
+(1) api2.0 api3.0 百度api
+(2) 所有api下单流程走一遍（侧重流程是不是能通）
+(3) 推送
+
+4.扫码
+扫码二级分销商加价
+
+5.app 流程走一遍
+
+6.导码预约 流程走一遍
+
+
+###################二、线路：######################
+1.后台
+(1) 线路产品vst同步（侧重流程）
+(2) 线路产品管理查询
+(3) 供应商打包 自主打包（侧重点流程）
+(4) 分不分销
+(5) 下单
+(6) 时间价格
+
+2.b2b
+(1) 线路品类详情页展示 
+(2) b2b前台搜索页展示 下单列表页 下单页 下单
+
+3.api2.0 去哪儿
+(1) api2.0、去哪儿产品批量单个接口（侧重接口展示），推送
+(2) 所有api下单流程走一遍（侧重流程是不是能通）
+
+
+
+######################三、酒店：######################
+1.后台
+(1) 酒店产品商品vst同步
+(2) 酒店产品管理查询（各种查询条件）
+(3) 分不分销
+(4) 下单
+
+
+2.b2b
+(1) b2b前台搜索页展示 酒店品类详情页展示 
+(2) 下单列表页 下单页 下单
+(3) B2B酒店推荐页  B2B酒店搜索页  B2B酒店详情页
+
+3. 携程 淘宝旅行API 阿里酒店API 艺龙api
+(1) 产品推送 产品套餐变更推送
+(2) Cps联盟批量单个产品接口  CPS产品佣金展示,下单返佣计算
+(3) 所有api下单流程走一遍（侧重流程是不是能通）
+
+4.app
+酒店频道产品内商品列表
+
+
+ 
+
+#####################四、邮轮：######################
+1.后台
+(1) 邮轮产品商品vst同步
+(2) 邮轮产品管理查询（各种查询条件）
+(3) 分不分销
+(4) 邮轮打包
+(5) 下单
+
+2.b2b
+(1) 邮轮品类详情页展示 
+(2) 下单列表页 下单页 下单
+
+
+
+###################五、签证，保险：#####################
+1.后台
+(1) 保险签证产品商品vst同步
+(2) 保险签证产品管理查询（各种查询条件）
+(3) 分不分销
+
+2.b2b
+(1) b2b签证详情页展示 保险下单页附加展示
+(2) 下单
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

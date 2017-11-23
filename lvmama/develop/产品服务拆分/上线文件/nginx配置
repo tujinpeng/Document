@@ -1,0 +1,11 @@
+nginx 配置信息如下：需要配置到super.lvmama.com域名下边，访问
+	1.新增upstream
+	upstream tnt_product_service_servers {
+		  server 172.20.13.153:8080;
+		  server 172.20.13.193:8080;
+          server 172.20.13.213:8080;
+	}
+	2.super.lvmama.com域名下新增location
+	 location /tnt_product_service/ {
+             proxy_pass   http://tnt_product_service_servers/tnt_product_service/;
+     }
