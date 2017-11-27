@@ -117,7 +117,10 @@ class Protocol$Adpative implements Protocol{
 
 
 12.dubbo中远程通信事件
-连接和断开 请求和响应 心跳 异常事件 sent事件 
+连接和断开 请求和响应 心跳 异常事件 sent事件
+
+
+13.dubbo官网新版本支持当线程池满时，dump下线程栈（注意看下新版本如何实现） 
 
 
 

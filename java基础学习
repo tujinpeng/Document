@@ -3,6 +3,7 @@
 算法
 
 集合
+异常？？？
 并发
 nio
 
@@ -129,6 +130,17 @@ firstKey
 
 (7)堆(优先级队列) 
 PriorityQueue
+
+
+#异常
+(1)对于你自己犯的错，我们就称为RuntimeException，我们也叫做unchecked Exception。程序中可以处理也可以不处理
+
+像NullPointException ArrayIndexOutOfBoundsException等等都属于运行时异常
+
+(2)对于不是你犯的错，我们统称为非RuntimeException，也叫checked Exception。
+程序强制你处理
+
+像IOException都是强制要检查的异常
 
 
 
