@@ -1,6 +1,14 @@
 1.比较重要的几个接口
-(1)BeanPostProcesser
-(2)BeanFactoryPostProcessor--扩展BeanDefinitionRegistryPostProcessor
+
+(1)BeanFactoryPostProcessor--扩展BeanDefinitionRegistryPostProcessor
+beanFactory中beanDefinition定义加载完成后，创建bean之前调用
+
+(2)BeanPostProcesser
+在每一个创建bean之后调用
+
+(3)ApplicationListener
+在所有的bean创建完成后通知调用
+
 
 (3)ApplicationContextAware
 (4)BeanFactoryAware
