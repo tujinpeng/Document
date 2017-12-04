@@ -35,6 +35,28 @@ netty
 1 内部类对象的创建依赖于外部类对象；
 2 内部类对象持有指向外部类对象的引用。
 
+#基础
+1.面向对象：
+一切皆是对象，用引用操控对象
+new的对象存在堆中，对象引用、基本数据类型在堆栈中
+
+2.对象的访问控制
+public---所有类可见
+protected---继承可见 同一包可见 不同包子类可见
+default---包私有 同一包下可见
+private---类私有
+
+3.hashcode和equals
+(1)当对象作为散列的数据结构(HashSet HashMap LinkedHashSet LinkedHashMap)的key时，注意要覆写hashcode和equals方法，保证key的唯一性
+
+(2)覆写equals方法时，必须覆写hashcode方法
+equals方法相等时，hashcode值一定相等
+equals方法不相等时，hashcode值可以相等(hash冲突)
+
+
+
+
+
 
 #集合
 (1)数组 
