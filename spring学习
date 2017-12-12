@@ -33,3 +33,84 @@ bean定义的扫描器
 
 
 4.IOC和类加载器关系？？
+
+
+
+一.spring容器启动过程
+Root WebApplicationContext: initialization started
+WebApplicationContext   XmlWebApplicationContext
+ServletContext
+DefaultListableBeanFactory
+
+
+org.springframework.web.context.ContextLoaderListener#contextInitialized
+org.springframework.web.context.ContextLoader#initWebApplicationContext
+org.springframework.context.support.AbstractApplicationContext#refresh
+
+
+jar:file:/Users/tujinpeng/Developer/IdeaProjects/tnt_route_mondy/tnt/tnt_front/target/tnt_front/WEB-INF/lib/activemq-core-5.5.1.jar!/META-INF/spring.handlers
+
+一、IOC：
+1.加载bean的定义
+通过解析xml元素的namespaceuri，调用对应namespaceHandler的BeanDefinitionParser解析不同的标签，生成一个个beanDefinition，然后注册到beanFactory上。
+
+(1)<context:property-placeholder/>标签
+注册一个bean定义的后置处理器PropertyPlaceholderConfigurer，用来替换bean定义属性中的占位符
+
+(2)<context:annotation-config />标签
+注册一些和spring容器相关的BeanPostProcessor【bean创建完成的后置处理器】：
+
+#AutowiredAnnotationBeanPostProcessor
+@Autowired注解处理器：将对应的bean注入到成员变量中去
+
+#RequiredAnnotationBeanPostProcessor
+@Required注解处理器：检查必要参数
+
+#CommonAnnotationBeanPostProcessor
+@Resource、@PostConstruct、@PreDestroy注解处理器
+
+(3)<context:component-scan/>标签
+扫描classpath下带有@Component注解的class类，生成一个个注解bean的定义，加入到beanFactory中
+
+(4)
+
+2.bean定义的后置处理（修改bean的定义）【BeanFactoryPostProcessor】
+通过注册beanFactoryProcesser接口，可以在bean对象创建之前修改的它的定义
+
+(1)PropertyPlaceholderConfigurer
+修改bean定义中的占位符
+(2)AnnotationBean
+dubbo的AnnotationBean，向spring容器注册提供方服务注解@service的bean定义
+(3)MapperScannerConfigurer
+mybatis的mappper扫描配置，向spring容器注册生成mapper代理的factoryBean定义
+
+3.创建spring容器中的bean
+根据bean的定义(属性，方法)，通过反射或者factoryBean方式创建非单例的bean对象
+
+4.bean全部创建完成后的事件通知
+通过实现ApplicationListener接口，完成所有bean对象创建结束的后置通知
+
+
+
+二.spring中一些可以复用的工具类
+BeanUtils               反射创建bean的工具类
+PropertiesLoaderUtils   加载属性文件
+ReflectionUtils         jdk反射的工具类
+Constants               存储类中静态属性变量的缓存
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

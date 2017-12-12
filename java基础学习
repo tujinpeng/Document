@@ -20,7 +20,7 @@ netty
 -----------------------------------------------
 #cas compareAndSet 如果两个线程是同一个对象 都能set成功么
 
-#LongAddr高效原子计数器
+#LongAdder高效原子计数器
 
 #强引用 弱引用（ThreadLocal WeakHashMap） 软引用 虚引用
 
