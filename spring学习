@@ -84,8 +84,15 @@ dubbo的AnnotationBean，向spring容器注册提供方服务注解@service的be
 (3)MapperScannerConfigurer
 mybatis的mappper扫描配置，向spring容器注册生成mapper代理的factoryBean定义
 
-3.创建spring容器中的bean
-根据bean的定义(属性，方法)，通过反射或者factoryBean方式创建非单例的bean对象
+3.实例化spring容器中的bean
+根据bean的定义(属性，方法)，通过反射或者factoryBean方式创建非单例的bean对象：
+
+实例化对象后初始化过程：
+(1).调用aware接口
+(2).调用beanPostProcesser的前置处理器
+(3).调用初始化的方法:afterPropertiesSet或者init-method
+(4).调用beanPostProcesser的后置处理器
+
 
 4.bean全部创建完成后的事件通知
 通过实现ApplicationListener接口，完成所有bean对象创建结束的后置通知
