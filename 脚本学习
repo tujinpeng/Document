@@ -6,6 +6,7 @@ brew services start activemq
 
 ##查看占用的端口号
 lsof -i tcp:1099
+lsof -i tcp:8080
 
 #查看ip
 ifconfig
@@ -38,7 +39,7 @@ grep -a10000 'queryPriceInfo start::tntSellPackageId:\[455460\]' */catalina.out-
 #tomcat
 -Xms2048M -Xmx4096M -XX:PermSize=2048M -XX:MaxPermSize=4096M
 
-http://10.200.3.7/svn/tnt/release/trunk/tnt_api
+
 
 
 

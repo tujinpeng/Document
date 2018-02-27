@@ -39,6 +39,15 @@
 
 6.final内存语义
 
+#写final域的重排序规则:
+  在引用变量被其他线程可见之前,引用变量持有的final域在构造函数中都初始化完毕了
+  (1)禁止发final域的写(如果final域是对象,还包括final对象的成员域) 重排序到构造函数之外:意味着safeMessagePublisher引用返回时,messageMap数据已经初始化完毕,不存在当safeMessagePublisher引用不为空,map数据不全的问题
+  (2)实现原理:编译器在编译期,会将final域的写之后,构造函数return之前,插入一个StoreStore屏障,让构造器等待final写之后才返回(类似并发的CyslicBarrier)
+     
+#读final域的重排序规则:
+ （1）保证读对象引用和读对象final域的先后顺序,禁止重排序有个alpha处理器会进行重排序)
+  (2)实现原理:编译器在编译器,会在读final域的前面插入一个LoadLLoad屏障,保证读final域前,要先读对象引用
+
 7.多线程
 (1) 线程6状态
 开始：线程start之前
@@ -96,14 +105,14 @@ join: 主线程等待子线程执行完毕
 
 
 11.阻塞队列
-(1)LinkedBlockingQueu
+(1)LinkedBlockingQueue
 -two-lock-queue
 -putLock
 -takeLock
 
 (2)SynchronousQueue
 duals lock
--lock-free(无锁技术)
+
 -通过spin自旋限制竞争
 
 offer和poll操作：若此时队列中没有可以匹配的线程,不会等待，则直接返回null
@@ -205,8 +214,14 @@ shutdownNow():
 线程池提供对一些系统资源的边界管理，例如线程资源、任务缓存大小
 
 #线程池的思想
-生产者消费者模式（消息队列）
+生产者消费者模式
+
+阻塞队列：
+(1)充当任务的缓冲，使生产者消费者解耦
+(2)还有个比较重要的角色：当线程池中工作者线程空闲时，让他一直阻塞不销毁；任务繁忙时要及时通知到工作者线程【阻塞队列take方法实现】
+
 线程池工作原理
+
 
 #线程池参数
 线程池状态和工作者线程数的包装原子变量
@@ -228,16 +243,13 @@ dubbo线程池
 (1)future模型(等待/通知模式)
 -futureTask
 
-原理：利用一个state状态的cas变更跟踪异步任务的执行情况，用一个简单的
+原理：利用一个volatile state状态的cas变更跟踪异步任务的执行情况，用一个简单的
 栈持有等待任务完成的线程们
 
 应用：当调用futureTask.get()方法获取异步任务完成的结果时，当任务未完成，则当前线程进入stack挂起等待，等待任务执行完毕通知栈中所有等待的线程，返回任务执行完成的结果。
 
 
 (2)callBack模型
-
-
-
 
 
 研究线程池时，可以参照dubbo的AbortPolicyWithReport了解一些线程池运行的必要参数

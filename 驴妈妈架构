@@ -57,10 +57,41 @@
  182717  834623
 
 
+com.lvmama.vst.api.prod.service.VstSuppGoodsService#findSuppGoodsByproductBranchId(java.lang.Long, java.lang.Long)
+ 
+2137154 326785
+
+com.lvmama.scenic.api.ticket.prod.service.ScenicTicketGoodsService#findGoodsDetail
+酒店商品  4166235
+交通商品  4161488
+
+
+频道页异步加载慢请求：
+1.特别推荐post ：http://f.lvmama.com/channel/fillInSpecialRecomm.do
+type:LOCALTOUR
+
+2.最新甩卖post ：http://f.lvmama.com/channel/fillInNewPriceOrNewOrder.do
+type:LOCALTOUR
+categoryType:LATEST_SPECIAL
+
+3.销售排行post ：http://f.lvmama.com/channel/fillInNewPriceOrNewOrder.do
+type:LOCALTOUR
+categoryType:SALES_RANKING
+
+4.最新上线post ：http://f.lvmama.com/channel/fillInNewPriceOrNewOrder.do
+type:LOCALTOUR
+categoryType:LATEST_ON_LINE
 
 
 
 
+33 44 55 77 88 99 王斐修改 黑龙江 qq
 
+
+class Node{
+	private int id;
+	private int name;
+	private int id1;
+}
 
 

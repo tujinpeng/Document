@@ -1,5 +1,99 @@
-1.比较重要的几个接口
+一、IOC：
+spring容器启动的过程：
+1、加载bean的定义
+2、定义加载完毕后，触发bean定义的后置处理器
+3、创建bean对象
+4、bean全部创建完成后的事件通知
 
+########################【1.加载bean的定义】#############################
+
+通过解析xml元素的namespaceuri，调用对应namespaceHandler的BeanDefinitionParser解析不同的标签，生成一个个beanDefinition，然后注册到beanFactory上。
+
+#context标签
+(1)<context:property-placeholder/>标签
+注册一个bean定义的后置处理器PropertyPlaceholderConfigurer，用来替换bean定义属性中的占位符
+
+(2)<context:annotation-config />标签
+注册一些和spring容器相关的BeanPostProcessor【bean创建完成的后置处理器】：
+
+#AutowiredAnnotationBeanPostProcessor
+@Autowired注解处理器：将对应的bean注入到成员变量中去
+
+#RequiredAnnotationBeanPostProcessor
+@Required注解处理器：检查必要参数
+
+#CommonAnnotationBeanPostProcessor
+@Resource、@PostConstruct、@PreDestroy注解处理器
+
+(3)<context:component-scan/>标签
+通过ClassPathBeanDefinitionScanner类，扫描classpath下带有@Component注解的class类，生成一个个注解bean的定义，加入到beanFactory中
+
+
+#aop标签：
+(1)<aop:aspectj-autoproxy/>
+注册解析aop注解的beanPostProcesser【AnnotationAwareAspectJAutoProxyCreator】
+
+(2)<aop:config>
+注册创建aop动态代理的beanPostProcesser【AspectJAwareAdvisorAutoProxyCreator】，持有所有的切面配置
+
+#事务标签：
+(1)<tx:annotation-driven>
+生成事务的动态代理
+
+
+##########################【2.bean定义的后置处理】#########################
+修改bean的定义，通过注册beanFactoryProcesser接口，可以在bean对象创建之前修改的它的定义
+
+(1)PropertyPlaceholderConfigurer
+修改bean定义中的占位符
+(2)AnnotationBean
+dubbo的AnnotationBean，向spring容器注册提供方服务注解@service的bean定义
+(3)MapperScannerConfigurer
+mybatis的mappper扫描配置，向spring容器注册生成mapper代理的factoryBean定义
+(4)ZooKeeperPropertyPlaceholderConfigurer
+远程加载zookeeper配置，覆盖本地bean定义中的占位符
+
+
+########################【3.实例化spring容器中的bean】#####################
+根据bean的定义(属性，方法)，通过反射或者factoryBean方式创建非单例的bean对象
+
+Spring单例对象的初始化其实可以分为三步:
+(1)【createBeanInstance 实例化对象】：
+实际上就是调用对应的构造方法构造对象，此时只是调用了构造方法，springxml中指定的property并没有进行populate
+(2)【populateBean 填充属性】:
+这步对spring xml中指定的property进行populate
+(3)【initializeBean 初始化方法】:
+调用spring xml中指定的init方法，或者AfterPropertiesSet方法会发生循环依赖的步骤集中在第一步和第二步
+#初始化方法过程：
+-调用aware接口
+-调用beanPostProcesser的前置处理器
+-调用初始化的方法:afterPropertiesSet或者init-method
+-调用beanPostProcesser的后置处理器
+
+#spring在创建对象的时候是如何解决循环依赖的？：
+(1)创建对象A的时候，【先提前暴露一个已实例化未初始化的beanA】，下面填充属性的时候，要依赖对象B创建对象B，对象B又依赖对象A,这时候可以直接拿之前提前暴露的未初始化的beanA，这样相互依赖的对象A、B都可以初始化了
+
+(2)解决循环依赖的原理实际上是java是基础对象引用的传递，我们可以先依赖对象的引用，对象的属性可以稍后加载
+
+
+#####################【4.bean全部创建完成后的事件通知】#####################
+通过实现ApplicationListener接口，完成所有bean对象创建结束的后置通知
+
+
+二、AOP：
+(1)spring创建bean之前，会注册一个创建aop动态代理的beanPostProcesser，它持有所有的切面配置advisors
+(2)当每个bean初始化的时候都要调用这个processer，判断bean的类和所有方法是否匹配processer上切面配置，若匹配上则生成动态代理包装原来的bean
+
+三、事务：
+基于aop和threadlocal实现事务的回滚
+
+四.spring中一些可以复用的工具类：
+BeanUtils               反射创建bean的工具类
+PropertiesLoaderUtils   加载属性文件
+ReflectionUtils         jdk反射的工具类
+Constants               存储类中静态属性变量的缓存
+
+五.spring扩展接口
 (1)BeanFactoryPostProcessor--扩展BeanDefinitionRegistryPostProcessor
 beanFactory中beanDefinition定义加载完成后，创建bean之前调用
 
@@ -31,79 +125,14 @@ beanFactory中beanDefinition定义加载完成后，创建bean之前调用
 bean定义的扫描器 
 扫描指定路径下带有@Componet注解的class文件，生成beanDefinitions注册到beanFactory。
 
-
 4.IOC和类加载器关系？？
 
 
-
-一.spring容器启动过程
-Root WebApplicationContext: initialization started
-WebApplicationContext   XmlWebApplicationContext
-ServletContext
-DefaultListableBeanFactory
-
-
-org.springframework.web.context.ContextLoaderListener#contextInitialized
-org.springframework.web.context.ContextLoader#initWebApplicationContext
-org.springframework.context.support.AbstractApplicationContext#refresh
-
-
-jar:file:/Users/tujinpeng/Developer/IdeaProjects/tnt_route_mondy/tnt/tnt_front/target/tnt_front/WEB-INF/lib/activemq-core-5.5.1.jar!/META-INF/spring.handlers
-
-一、IOC：
-1.加载bean的定义
-通过解析xml元素的namespaceuri，调用对应namespaceHandler的BeanDefinitionParser解析不同的标签，生成一个个beanDefinition，然后注册到beanFactory上。
-
-(1)<context:property-placeholder/>标签
-注册一个bean定义的后置处理器PropertyPlaceholderConfigurer，用来替换bean定义属性中的占位符
-
-(2)<context:annotation-config />标签
-注册一些和spring容器相关的BeanPostProcessor【bean创建完成的后置处理器】：
-
-#AutowiredAnnotationBeanPostProcessor
-@Autowired注解处理器：将对应的bean注入到成员变量中去
-
-#RequiredAnnotationBeanPostProcessor
-@Required注解处理器：检查必要参数
-
-#CommonAnnotationBeanPostProcessor
-@Resource、@PostConstruct、@PreDestroy注解处理器
-
-(3)<context:component-scan/>标签
-扫描classpath下带有@Component注解的class类，生成一个个注解bean的定义，加入到beanFactory中
-
-(4)
-
-2.bean定义的后置处理（修改bean的定义）【BeanFactoryPostProcessor】
-通过注册beanFactoryProcesser接口，可以在bean对象创建之前修改的它的定义
-
-(1)PropertyPlaceholderConfigurer
-修改bean定义中的占位符
-(2)AnnotationBean
-dubbo的AnnotationBean，向spring容器注册提供方服务注解@service的bean定义
-(3)MapperScannerConfigurer
-mybatis的mappper扫描配置，向spring容器注册生成mapper代理的factoryBean定义
-
-3.实例化spring容器中的bean
-根据bean的定义(属性，方法)，通过反射或者factoryBean方式创建非单例的bean对象：
-
-实例化对象后初始化过程：
-(1).调用aware接口
-(2).调用beanPostProcesser的前置处理器
-(3).调用初始化的方法:afterPropertiesSet或者init-method
-(4).调用beanPostProcesser的后置处理器
-
-
-4.bean全部创建完成后的事件通知
-通过实现ApplicationListener接口，完成所有bean对象创建结束的后置通知
-
-
-
-二.spring中一些可以复用的工具类
-BeanUtils               反射创建bean的工具类
-PropertiesLoaderUtils   加载属性文件
-ReflectionUtils         jdk反射的工具类
-Constants               存储类中静态属性变量的缓存
+六。spring当中注意的知识点：
+1.spring中bean依赖其他bean的两种方式
+(1)@autowired
+(2)构造函数
+spring会自动把构造函数里的bean初始化，依赖进来
 
 
 
