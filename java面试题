@@ -1,6 +1,8 @@
-spring循环引用的解决
+#spring循环引用的
+
 
 AopContext.currentProxy()从当前线程的threadLocal中获取当前的代理对象
+
 
 
 Java中object常用方法
