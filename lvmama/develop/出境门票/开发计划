@@ -1,0 +1,103 @@
+1.refereshTimePrice
+单门票
+
+场次票 242300   1296502
+
+期票  2988190 4170653
+
+实体票 展示快递信息
+
+
+待做：
+要汤总下单添加字段:
+subName
+aperiodicFlag
+下单价格显示分销售价和分销结算价
+门票成人数儿童数 不是只有1成人0儿童的
+
+
+价格同步：http://super.lvmama.com/tnt-price-back/ticket/compensate/metaPriceSync/3297903/GOODS
+
+
+git如何查看历史内容？
+git如何查看提交的历史记录？
+如何copy一个文件的全路径？
+
+v-show 只能用在dom元素上 不能用在template上
+v-for遍历的时候不允许操作vue的data数据，否则会产生死循环
+
+#选择日期
+calendarConfirmCallback.pushFun(refereshTimePrice);
+//刷新价格时如果是马戏票先清空之前日期的场次信息
+//刷新商品列表价格 刷新场次票信息
+
+calendarConfirmCallback.pushFun(LVMAMA.order.ticket.refereshOtherTicket);
+//刷新主商品的价格
+//刷新出有价格的其他票信息
+
+calendarConfirmCallback.pushFun(checkStock);
+-校验库存
+-计算总价
+门票总价 订单总价 差价 快递价格
+
+
+#点击预定按钮
+bookNumOnchangeCallback.pushFun(LVMAMA.order.ticket.refereshTravellers);
+bookNumOnchangeCallback.pushFun(checkStock);
+
+
+大家如果在js中取国际化的值  可以通过 vue变量.$t('message.hello')
+
+
+TntProductVoDbService TntWordTipService
+
+B2BTicketGoodsService
+
+172114
+
+
+
+2988190
+-其他票   4170571
+-期票     4170631
+场次票    1296502  242300
+团队票	 4172456
+组合套餐票 2941718 1888251
+
+ 单门票产品ID  2988304 
+ 自主打包  2988302
+
+
+ark环境
+单门票产品ID 2988304
+商品ID：
+虚拟 4171315 
+期票 4171316
+实体 4171788 
+场次
+团队票 4172536
+
+自主打包组合套餐票 2988302
+
+主站：10.200.6.230
+
+http://f.lvmama.com/scenic/product/scenic_product_detail.html?productId=2988304
+
+单门票产品ID2988304
+商品ID：
+虚拟 4171315 
+期票4171316
+实体4171788
+场次4171818
+
+自主打包组合套餐票2988302
+
+172114
+知识：
+(1)构造模式
+(2)责任链
+(3)arrayList可以放入空元素
+
+
+
+

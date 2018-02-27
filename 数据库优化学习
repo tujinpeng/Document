@@ -1,0 +1,87 @@
+explain执行计划：
+type : ref eq_ref index all
+possible_keys 
+keys
+ref
+rows
+extra : using where 、 use index、use fileSort
+
+##################################sql优化学习###############################
+select count(*) from tnt_route_product t;
+select * from tnt_route_product t;
+select * from tnt_sell_package t;
+select * from tnt_sell_package_relation t;
+
+
+
+
+##########传统分页查询方式
+EXPLAIN
+select * 
+from tnt_route_product t
+order by t.product_id
+limit 200000,10;
+
+#用延时关联+覆盖索引的方式优化的分页查询
+EXPLAIN
+select *
+from tnt_route_product outer_prod
+inner join(
+	select product_id
+	from tnt_route_product inner_pord
+	order by inner_pord.product_id
+	limit 200000,10
+)as p using(product_id);
+
+
+
+################子查询优化
+EXPLAIN
+select * 
+from tnt_sell_package t 
+where t.tnt_sell_package_id in(
+	select t.tnt_sell_package_id
+	from tnt_sell_package_relation r
+	where r.sell_product_id=1
+)；
+
+#用内关联改写子查询（注意where条件字段一定要加索引，否则会造成全表扫描）
+explain
+select *
+from tnt_sell_package t
+inner join tnt_sell_package_relation r
+on t.tnt_sell_package_id=r.tnt_sell_package_id
+where r.sell_product_id=1;
+
+alter table tnt_sell_package_relation add INDEX idx_sell_productId(`sell_product_id`);
+
+#########范围性的索引优化############
+##之前的索引（`SPEC_DATE`，`UNIT_ID`）日期范围很大时，索引会失效
+EXPLAIN
+select * from tnt_route_price.ROUTE_META_PRICE h WHERE h.spec_date >'2017-03-06' and h.spec_date <'2017-08-07' and h.unit_id=23930;
+
+##优化后的索引（`UNIT_ID`，`SPEC_DATE·），将筛选力度最大的字段放在前面
+
+1.覆盖索引:
+一个包含查询所需的字段的索引称为 covering index 覆盖索引。MySQL只需要通过索引就可以返回查询所需要的数据，而不必在查到索引之后进行回表操作，减少IO，提供效率。
+   当你对一个sql 使用explain statement 查看一个sql的执行计划时，在EXPLAIN的Extra列出现Using Index提示时，就说明该select查询使用了覆盖索引。
+
+
+2.limit order by 分页优化 
+延时关联+覆盖索引的方式
+
+3.产品名称模糊匹配 like 'aaa%'
+前缀索引(取列product_name的字符前100作索引)
+
+4.distinct性能优化
+group by
+
+5.类似日期的范围查询索引不生效 范围查询转化成in的索引会生效
+例子：索引 idx_unitid_specdate
+select * from ROUTE_DIST_TIME_PRICE t where t.SPEC_DATE in('2017-05-25','2017-07-25') and t.unit_id=19556;
+
+
+优化总结：
+（1）查询的字段要加索引
+（2）关联的字段也要加索引 
+（3）将筛选力度大的字段放在组合索引的前面

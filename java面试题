@@ -1,0 +1,33 @@
+spring循环引用的解决
+
+AopContext.currentProxy()从当前线程的threadLocal中获取当前的代理对象
+
+
+Java中object常用方法
+1、clone() 
+2、equals() 
+3、finalize() 
+4、getclass() 
+5、hashcode() 
+6、notify() 
+7、notifyAll() 
+8、toString()
+
+Java序列化与反序列化是什么？为什么需要序列化与反序列化？如何实现Java序列化与反序列化？
+
+Arrays和Collections 对于sort的不同实现原理？
+
+Spring AOP 实现原理？
+
+抽象类和接口的联系?
+#相同点
+(1）他们都不能被实例化，只是用于其他类继承和实现的
+(2) 他们都包含有抽象方法，继承和实现他们的类都需要实现这些抽象方法
+#不同点
+(1)接口里只能包含抽象方法，而抽象类里还可以写普通方法
+(2)接口里只能定义静态变量，而抽象类里可以定义普通变量、静态变量用于继承
+
+
+ 再问你一下设计模式相关的吧，请你介绍一下观察者模式？或者举个观察者模式的例子吧。
+
+ Java中的NIO，BIO，AIO分别是什么

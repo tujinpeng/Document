@@ -1,0 +1,56 @@
+1.线路api2.0下单优化
+
+校验：
+#tntDistProductService.getVstProduct()    145
+调用主站查产品详情信息 有用
+
+-#tntProductVstService.getByProductId（）	调用2次 143
+只是查一个品类 完全可以不用掉
+
+#vstCommOrderManageService.countPrice（）      600
+
+#tntDistProductService.checkRouteGoodsTimePrice()  600
+
+
+下单：
+#vstCommOrderManageService.createOrder()          1900
+
+#vstCommOrderQueryService.findOrderDetail()       186
+
+？#TntUserService.getWithChannelAndCompanyType(userId)  2000
+
+-#tntDistProductService.findProductDetail()		  143
+可以从前面接口中传过来
+
+-#com.lvmama.tnt.order.service.TntRouteOrderServiceImpl#checkOrderApproveStatus里再次调用tntDistOrderService.queryOrderByOrderId    304
+只为了拿主站资源审核和订单审核状态 可以优化 之前已经调用过主站findOrderDetail了
+
+
+2.线路api1.0下单优化
+#distributionProductService.getVstProduct   147
+问题：
+调用主站vstRouteService.findProductDetail 查询
+有效可售状态
+品类
+行程
+productType
+
+方案：
+调用小接口
+
+#distributionProductService.getOrderRequired 133
+#distributionProductService.getVstOrderOrigin    805
+#distributionProductService.checkRouteGoodsTimePrice   867 
+问题：
+tnt_clutter->tnt_sorder->tnt_dist->vst_pet
+
+方案：
+优化链路
+tnt_clutter->vst_pet
+
+
+
+
+
+
+

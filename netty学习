@@ -1,0 +1,49 @@
+一、线程模型
+1.NioEventLoop
+#一个NioEventLoop绑定一个Selector,处理一组的channel的I/O事件
+(1)优先处理多路复用器上就绪的channel事件
+(2)处理实时任务
+(3)处理定时任务
+
+
+
+2.ServerBootstrap
+ServerBootstrapAcceptor
+ChannelInitializer
+ChannelInboundHandlerAdapter
+
+
+二、netty优化
+1、netty是如何解决java nio bug？
+#问题描述：
+--当不断轮询多路复用器上selector.select(),处理就绪的i/o事件时，会出现空轮询的情况
+导致cpu飙升100%
+
+#解决方案：
+ 对这种selector.select()返回空的情况计数，当到达一定阈值(512)时重建selector
+
+
+三、缓存区byteBuf
+#netty的byteBuf和jdk的byteBuffer区别：
+byteBuf具有连个独立的读写索引，分别控制读访问和写访问的字节数据
+byteBuffer只有一个索引position，控制读写，所以当在读写模式之间切换的时候需要调用filp()
+
+1.堆缓存区 直接缓存区 复合缓存区
+
+2、netty缓存区分为【可丢弃】 【可读】【可写】三个部分
+
+3.缓存区复制的两种方式：
+slice 切分【浅拷贝】  ：  共享同一源数据，但是有自己独立的读索引 写索引 标记索引
+copy  复制【深拷贝】  ：  不共享源数据
+
+4.缓存区分配
+(1)PooledByteBufAllocator
+池化了ByteBuf实例，提高了性能并最大限度地减少了内存碎片 
+使用【jemalloc】内存分配  google的【tcmalloc】
+判断对象回收，使用了【引用计数法】     对于池化至关重要
+
+(2)UnpooledByteBufAllocator
+未池化的缓冲区分配器
+
+5.有用的工具类 ByteBufUtil
+

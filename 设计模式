@@ -1,0 +1,21 @@
+1.责任链
+(1)servlet中的filter
+#chain基于数组的方式，组合filter链，用一个position位置标记处理的节点位置，通过不停的position++，移动位置经过处理链。
+
+#注意：这种方式每次调用chain的时候，都要new一个chain实例，保证线程安全（如果共享同一个chain，position++这种操作线程不安全）
+
+
+#代码还算简单，结构也比较清晰，定义一个Chain，里面包含了Filter列表和servlet，达到在调用真正servlet之前进行各种filter逻辑。
+
+
+(2)dubbo中的filter责任链
+#基于链表的形式
+#通过把Filter封装成 Invoker的匿名类，通过链表这样的数据结构来完成责任链
+
+(3)mybatis中的plugin
+嵌套代理
+
+(4)netty中的channelPieline
+双向链表
+
+2.动态代理
