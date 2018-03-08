@@ -58,7 +58,7 @@ B2BTicketGoodsService
 
 
 2988190
--其他票   4170571
+-其他票   4170571       
 -期票     4170631
 场次票    1296502  242300
 团队票	 4172456
@@ -83,14 +83,14 @@ ark环境
 
 http://f.lvmama.com/scenic/product/scenic_product_detail.html?productId=2988304
 
-单门票产品ID2988304
+单门票产品ID 2988304
 商品ID：
 虚拟 4171315 
-期票4171316
-实体4171788
-场次4171818
+期票 4171316
+实体 4171788
+场次 4171818
 
-自主打包组合套餐票2988302
+自主打包组合套餐票 2988302
 
 172114
 知识：
@@ -99,5 +99,33 @@ http://f.lvmama.com/scenic/product/scenic_product_detail.html?productId=2988304
 (3)arrayList可以放入空元素
 
 
+http://f.lvmama.com/scenic/order/order.html?goodsId=4172536&userId=89&visitTime=2018-03-10
+
+
+ticket03,密码03ticket
+
+
+
+
+
+单商品非期票场次票--》其他票（刷新下单必填项、快递信息）
+
+
+long startQueryCategoryId = System.currentTimeMillis();
+			 
+			 ProdProductDTO result=queryCategoryId(MsgConstant.OBJECT_TYPE.valueOf(message.getObjectType()),message.getObjectId()); 
+			 if (result == null || result.getCategoryId() ==null) {
+				 logger.error("主站品类为空，此消息不再分发消费!");
+				 return ;
+			 }
+			 Long categoryId =Long.valueOf(result.getCategoryId());
+			 
+			 String pk =result.getPackageType();
+			 logger.info("主站品类是"+categoryId+",打包类型是 "+pk);
+			 long endQueryCategoryId = System.currentTimeMillis();
+			 logger.info("ProductProcesser queryCategoryId end..,need time.." + (endQueryCategoryId - startQueryCategoryId));
+
+
+http://10.200.3.7/svn/versatile/branches/Normal/vst_back
 
 
