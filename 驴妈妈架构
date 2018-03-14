@@ -82,16 +82,27 @@ categoryType:SALES_RANKING
 type:LOCALTOUR
 categoryType:LATEST_ON_LINE
 
+jms_server/override/10.112.2.178
+
+
+taskTracker.nodeGroup:
+
+tnt_prod_route_tracker
+taskTracker.nodeGroup/override/10.200.2.38
+taskTracker.nodeGroup/override/10.200.2.46
+
+tnt_prod_hotel_tracker
+taskTracker.nodeGroup/override/10.200.2.104
+
+tnt_prod_ticket_tracker
+taskTracker.nodeGroup/override/10.200.2.110
+taskTracker.nodeGroup/override/10.200.2.118
+
+
+tnt_price_back 门票新价格服务
 
 
 
-33 44 55 77 88 99 王斐修改 黑龙江 qq
 
-
-class Node{
-	private int id;
-	private int name;
-	private int id1;
-}
 
 
